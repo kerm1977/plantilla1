@@ -1,75 +1,88 @@
-{% extends 'base.html' %}
+<!-- AQUI ES TOTALMENTE PROHIBIDO INCRUSTAR FUNCIONES, SCRIPTS Y CSS
+TODO DEBE ESTAR EN UN ARCHIVO POR APARTE Y LINKEADO A  BASE.HTML-->
 
-{% block title %}{{ _('Registro') }}{% endblock %}
-
-{% block head_content %}
-<style>
-    .register-card {
-        background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-    }
-</style>
-{% endblock %}
-
+{% extends "base.html" %}
+{% block title %}Registrarse{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 col-lg-7">
-        <div class="register-card p-4 mt-5">
-            <h2 class="text-center text-warning mb-4">{{ _('Registro de Usuario') }}</h2>
-            <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
-                
-                <p class="text-muted text-center">{{ _('Los campos marcados con * son obligatorios.') }}</p>
-
-                <div class="mb-3">
-                    <label for="avatar" class="form-label">{{ _('Avatar (Opcional)') }}</label>
-                    <input class="form-control" type="file" id="avatar" name="avatar" accept="image/*">
-                </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">{{ _('Nombre *') }}</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ request.form.get('nombre', '') | title }}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="primer_apellido" class="form-label">{{ _('Primer Apellido *') }}</label>
-                    <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" value="{{ request.form.get('primer_apellido', '') | title }}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="segundo_apellido" class="form-label">{{ _('Segundo Apellido') }}</label>
-                    <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" value="{{ request.form.get('segundo_apellido', '') | title }}">
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">{{ _('Email *') }}</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ request.form.get('email', '') }}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="username_registro" class="form-label">{{ _('Usuario *') }}</label>
-                    <input type="text" class="form-control" id="username_registro" name="username_registro" value="{{ request.form.get('username_registro', '') }}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">{{ _('Contraseña *') }}</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword"><i class="fas fa-eye"></i></button>
+<div class="container mt-6">
+    <div class="columns is-centered">
+        <div class="column is-5">
+            <h1 class="title has-text-centered">Registrarse</h1>
+            <form method="POST" action="{{ url_for('register') }}">
+                <div class="field">
+                    <label class="label has-text-warning">Nombre</label>
+                    <div class="control">
+                        <input class="input is-rounded" type="text" name="nombre" required>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="confirm_password" class="form-label">{{ _('Confirmar Contraseña *') }}</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword"><i class="fas fa-eye"></i></button>
+
+                <div class="field">
+                    <label class="label has-text-warning">Primer Apellido</label>
+                    <div class="control">
+                        <input class="input is-rounded" type="text" name="primer_apellido" required>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="telefono" class="form-label">{{ _('Teléfono *') }}</label>
-                    <input type="tel" class="form-control" id="telefono" name="telefono" value="{{ request.form.get('telefono', '') }}" required>
+
+                <div class="field">
+                    <label class="label has-text-warning">Segundo Apellido</label>
+                    <div class="control">
+                        <input class="input is-rounded" type="text" name="segundo_apellido" required>
+                    </div>
                 </div>
 
-                <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-warning">{{ _('Registrarse') }}</button>
+                <div class="field">
+                    <label class="label has-text-warning">Email</label>
+                    <div class="control has-icons-left">
+                        <input class="input is-rounded" type="email" name="email" required>
+                        <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                    </div>
                 </div>
-                <p class="text-center mt-3">{{ _('¿Ya tienes una cuenta? ') }}<a href="{{ url_for('login') }}">{{ _('Inicia Sesión') }}</a></p>
+
+                <div class="field">
+                    <label class="label has-text-warning">Teléfono</label>
+                    <div class="control has-icons-left">
+                        <input class="input is-rounded" type="tel" name="telefono" maxlength="8" pattern="^\d{8}$" title="El teléfono debe contener exactamente 8 dígitos numéricos" required>
+                        <span class="icon is-small is-left"><i class="fas fa-phone"></i></span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label has-text-warning">Contraseña</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input is-rounded" type="password" name="password" id="password_input" required>
+                        <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                        <span class="icon is-small is-right is-clickable" id="toggle_password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label has-text-warning">Verificar Contraseña</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input is-rounded" type="password" name="verificar_password" id="confirm_password_input" required>
+                        <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                        <span class="icon is-small is-right is-clickable" id="toggle_confirm_password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <div class="control">
+                        <button class="button is-primary is-rounded is-large" type="submit">
+                            <span class="icon"><i class="fas fa-user-plus"></i></span>
+                            <span>Registrarse</span>
+                        </button>
+                    </div>
+                </div>
             </form>
+
+            <div class="has-text-centered mt-5 mb-6">
+                <p><a href="{{ url_for('login') }}">Iniciar Sesión</a></p>
+            </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

@@ -94,10 +94,18 @@ def editar_perfil():
 @login_required
 def change_password():
     if request.method == 'POST':
-        current_password = request.form['current_password']
-        new_password = request.form['new_password']
-        confirm_password = request.form['confirm_password']
+        # Usar .get() para evitar KeyError si el campo no está presente
+        # Corregido para que coincida con el nombre del campo del formulario: "current_password"
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if not current_password or not new_password or not confirm_password:
+            flash('Por favor, completa todos los campos.', 'danger')
+            return render_template('change_password.html')
+
         user = User.query.get(session['user_id'])
+        
         if not bcrypt.check_password_hash(user.password, current_password):
             flash('La contraseña actual es incorrecta.', 'danger')
         elif new_password != confirm_password:
@@ -108,7 +116,5 @@ def change_password():
             db.session.commit()
             flash('Contraseña actualizada con éxito.', 'success')
             return redirect(url_for('perfil.perfil'))
+            
     return render_template('change_password.html')
-
-# (El resto de tus rutas como backup_database, etc. pueden permanecer aquí sin cambios)
-
