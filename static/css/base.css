@@ -14,7 +14,8 @@
     --bs-light: #f8f9fa; --bs-dark: #212529; --bs-body-bg: var(--bs-white);
     --bs-body-color: var(--bs-dark); --bs-secondary-bg: #f8f9fa; --bs-tertiary-bg: #e9ecef;
     --bs-border-color: #dee2e6; --bs-link-color: var(--bs-primary); --bs-link-hover-color: #0a58ca;
-    --navbar-bg: rgba(255, 193, 7, 0.8); --card-bg: var(--bs-white); --modal-bg: var(--bs-white);
+    --navbar-bg: rgba(255, 193, 7, 0.8); /* Amarillo Warning */
+    --card-bg: var(--bs-white); --modal-bg: var(--bs-white);
     --navbar-link-color: #000; --navbar-brand-color: #000;
 }
 
@@ -35,12 +36,14 @@
     --bs-primary: var(--dark-heading-text); --bs-secondary: var(--dark-secondary-text);
     --bs-success: var(--dark-accent-green); --bs-info: #58a6ff; --bs-warning: var(--dark-link-text);
     --bs-danger: #f85149; --bs-light: var(--dark-primary-text); --bs-dark: var(--dark-bg);
-    --bs-body-bg: var(--dark-bg); --bs-body-color: var(--dark-primary-text);
+    --bs-body-bg: var(--dark-bg); /* Fondo del navegador */
+    --bs-body-color: var(--dark-primary-text);
     --bs-secondary-bg: var(--dark-surface); --bs-tertiary-bg: #21262d;
     --bs-border-color: var(--dark-border); --bs-link-color: var(--dark-link-text);
-    --bs-link-hover-color: var(--dark-link-hover); --navbar-bg: rgba(22, 27, 34, 0.85);
+    --bs-link-hover-color: var(--dark-link-hover);
+    --navbar-bg: rgba(13, 17, 23, 0.85);
     --card-bg: var(--dark-surface); --modal-bg: var(--dark-surface);
-    --navbar-link-color: var(--dark-accent-lavender); --navbar-brand-color: var(--dark-accent-pink);
+    --navbar-link-color: var(--dark-primary-text); --navbar-brand-color: var(--dark-primary-text);
 }
 
 /* TEMA SEPIA */
@@ -49,11 +52,13 @@
     --sepia-border: #d3c5b4; --sepia-primary: #9d6b2c; --sepia-primary-hover: #7b5523;
     --bs-primary: var(--sepia-primary); --bs-secondary: #a89d91; --bs-success: #5a8a5f;
     --bs-info: #5f8ea4; --bs-warning: #c88f4b; --bs-danger: #b75d69;
-    --bs-light: #fdf6ec; --bs-dark: var(--sepia-text); --bs-body-bg: var(--sepia-bg);
+    --bs-light: #fdf6ec; --bs-dark: var(--sepia-text);
+    --bs-body-bg: var(--sepia-bg); /* Fondo del navegador */
     --bs-body-color: var(--sepia-text); --bs-secondary-bg: var(--sepia-surface);
     --bs-tertiary-bg: #e0d5c4; --bs-border-color: var(--sepia-border);
     --bs-link-color: var(--sepia-primary); --bs-link-hover-color: var(--sepia-primary-hover);
-    --navbar-bg: rgba(211, 197, 180, 0.85); --card-bg: #fdf6ec; --modal-bg: #fdf6ec;
+    --navbar-bg: rgba(233, 222, 204, 0.85);
+    --card-bg: #fdf6ec; --modal-bg: #fdf6ec;
     --navbar-link-color: var(--sepia-text); --navbar-brand-color: var(--sepia-primary);
 }
 
@@ -62,7 +67,11 @@
 * SECCIÓN 2: APLICACIÓN GLOBAL DE ESTILOS DE TEMA
 * --------------------------------------------------------------------------
 */
-body { background-color: var(--bs-body-bg); color: var(--bs-body-color); transition: background-color 0.3s ease, color 0.3s ease; }
+body {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
 .card, .modal-content, .list-group-item, .accordion-item {
     background-color: var(--card-bg) !important; color: var(--bs-body-color) !important;
@@ -73,11 +82,11 @@ body { background-color: var(--bs-body-bg); color: var(--bs-body-color); transit
     border: 1px solid var(--bs-border-color) !important;
 }
 [data-theme="dark"] .form-control, [data-theme="dark"] .form-select { background-color: var(--bs-tertiary-bg) !important; }
-.table { --bs-table-bg: var(--card-bg); --bs-table-color: var(--bs-body-color); --bs-table-border-color: var(--bs-border-color); --bs-table-striped-bg: var(--bs-secondary-bg); }
-a { color: var(--bs-link-color); } a:hover { color: var(--bs-link-hover-color); }
+.table { --bs-table-bg: var(--card-bg) !important; --bs-table-color: var(--bs-body-color) !important; --bs-table-border-color: var(--bs-border-color) !important; --bs-table-striped-bg: var(--bs-secondary-bg) !important; }
+a { color: var(--bs-link-color) !important; } a:hover { color: var(--bs-link-hover-color) !important; }
 
-.dropdown-menu { background-color: var(--bs-secondary-bg); }
-.dropdown-item:hover { background-color: var(--bs-tertiary-bg); }
+.dropdown-menu { background-color: var(--bs-secondary-bg) !important; }
+.dropdown-item:hover { background-color: var(--bs-tertiary-bg) !important; }
 
 /* === INICIO CORRECCIÓN DEFINITIVA === */
 [data-theme="dark"] .dropdown-menu {
@@ -93,25 +102,25 @@ a { color: var(--bs-link-color); } a:hover { color: var(--bs-link-hover-color); 
 .text-primary { color: var(--bs-primary) !important; } .text-secondary { color: var(--bs-secondary) !important; }
 .text-success { color: var(--bs-success) !important; } .text-danger { color: var(--bs-danger) !important; }
 .text-warning { color: var(--bs-warning) !important; } .text-info { color: var(--bs-info) !important; }
-[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6 { color: var(--dark-heading-text); }
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6 { color: var(--dark-heading-text) !important; }
 
-.btn-primary { background-color: var(--bs-primary); border-color: var(--bs-primary); color: var(--bs-light); }
-.btn-secondary { background-color: var(--bs-secondary); border-color: var(--bs-secondary); }
-.btn-success { background-color: var(--bs-success); border-color: var(--bs-success); }
-.btn-danger { background-color: var(--bs-danger); border-color: var(--bs-danger); }
-.btn-warning { background-color: var(--bs-warning); border-color: var(--bs-warning); color: var(--bs-dark); }
-.btn-info { background-color: var(--bs-info); border-color: var(--bs-info); }
-[data-theme="dark"] .btn-primary { color: #fff; }
+.btn-primary { background-color: var(--bs-primary) !important; border-color: var(--bs-primary) !important; color: var(--bs-light) !important; }
+.btn-secondary { background-color: var(--bs-secondary) !important; border-color: var(--bs-secondary) !important; }
+.btn-success { background-color: var(--bs-success) !important; border-color: var(--bs-success) !important; }
+.btn-danger { background-color: var(--bs-danger) !important; border-color: var(--bs-danger) !important; }
+.btn-warning { background-color: var(--bs-warning) !important; border-color: var(--bs-warning) !important; color: var(--bs-dark) !important; }
+.btn-info { background-color: var(--bs-info) !important; border-color: var(--bs-info) !important; }
+[data-theme="dark"] .btn-primary { color: #fff !important; }
 
-[data-theme="dark"] .navbar-toggler-icon, [data-theme="sepia"] .navbar-toggler-icon { filter: invert(1); }
+[data-theme="dark"] .navbar-toggler-icon, [data-theme="sepia"] .navbar-toggler-icon { filter: invert(1) !important; }
 
 /*
 * --------------------------------------------------------------------------
 * SECCIÓN 3: ESTILOS GENERALES DE LAYOUT Y COMPONENTES
 * --------------------------------------------------------------------------
-
+*/
 /* === INICIO: ESTILOS NAVBAR CENTRALIZADOS (ACTUALIZADO) === */
-.custom-navbar {
+.navbar {
     background-color: var(--navbar-bg) !important;
     backdrop-filter: blur(5px);
     position: fixed;
@@ -119,12 +128,16 @@ a { color: var(--bs-link-color); } a:hover { color: var(--bs-link-hover-color); 
     left: 0;
     width: 100%;
     z-index: 1020;
-    border-bottom: 1px solid var(--bs-border-color);
+    border-bottom: 1px solid var(--bs-border-color) !important;
+    transition: background-color 0.3s ease, border-bottom-color 0.3s ease;
 }
-.custom-navbar .navbar-brand { color: var(--navbar-brand-color) !important; }
-.custom-navbar .nav-link { color: var(--navbar-link-color) !important; }
-.custom-navbar google-cast-launcher { --d-cast-button-color: var(--navbar-link-color); }
 
+.navbar .navbar-brand a, .navbar-item {
+    color: var(--navbar-link-color) !important;
+}
+.navbar .navbar-burger span {
+    background-color: var(--navbar-link-color) !important;
+}
 .navbar-brand-container {
     display: flex;
     align-items: center;
@@ -182,12 +195,15 @@ google-cast-launcher {
 
 /* === INICIO: ESTILOS FOOTER === */
 .footer {
-    background-color: var(--bs-secondary-bg);
-    border-top: 1px solid var(--bs-border-color);
+    background-color: var(--bs-secondary-bg) !important;
+    border-top: 1px solid var(--bs-border-color) !important;
     transition: background-color 0.3s ease, border-top-color 0.3s ease;
 }
-[data-theme="dark"] .footer { background-color: var(--dark-surface); }
+[data-theme="dark"] .footer { background-color: var(--dark-surface) !important; }
 [data-theme="dark"] .footer .text-muted,
-[data-theme="dark"] .footer a.text-muted { color: var(--dark-accent-lavender) !important; opacity: 0.9; }
+[data-theme="dark"] .footer a.text-muted { color: var(--dark-primary-text) !important; opacity: 0.9; }
 [data-theme="dark"] .footer a.text-muted:hover { color: var(--bs-light) !important; }
+[data-theme="sepia"] .footer { background-color: var(--sepia-surface) !important; }
+[data-theme="sepia"] .footer .text-muted,
+[data-theme="sepia"] .footer a.text-muted { color: var(--sepia-text) !important; opacity: 0.9; }
 /* === FIN: ESTILOS FOOTER === */
