@@ -26,7 +26,7 @@
     --dark-border: #30363d;
     --dark-primary-text: #c9d1d9;
     --dark-secondary-text: #8b949e;
-    --dark-heading-text: #58a6ff; /* Azul Pastel */
+    --dark-heading-text: #FF9CCE; /* AHORA ROSA PASTEL */
     --dark-link-text: #f0a24f; /* Naranja Pastel */
     --dark-link-hover: #ffc685;
     --dark-accent-pink: #f778ba; /* Rosa Pastel */
@@ -43,7 +43,7 @@
     --bs-link-hover-color: var(--dark-link-hover);
     --navbar-bg: rgba(13, 17, 23, 0.85);
     --card-bg: var(--dark-surface); --modal-bg: var(--dark-surface);
-    --navbar-link-color: var(--dark-primary-text); --navbar-brand-color: var(--dark-primary-text);
+    --navbar-link-color: var(--dark-primary-text); --navbar-brand-color: var(--bs-warning);
 }
 
 /* TEMA SEPIA */
@@ -77,9 +77,14 @@ body {
     background-color: var(--card-bg) !important; color: var(--bs-body-color) !important;
     border: 1px solid var(--bs-border-color) !important;
 }
-.form-control, .form-select {
-    background-color: var(--card-bg) !important; color: var(--bs-body-color) !important;
+.form-control, .form-select, .input {
+    background-color: var(--card-bg) !important; color: #c9d1d9 !important;
     border: 1px solid var(--bs-border-color) !important;
+    transition: border-color 0.3s ease; /* Transición para el cambio de borde */
+}
+/* Nuevo estilo para los labels */
+.label {
+    color: #c9d1d9 !important;
 }
 [data-theme="dark"] .form-control, [data-theme="dark"] .form-select { background-color: var(--bs-tertiary-bg) !important; }
 .table { --bs-table-bg: var(--card-bg) !important; --bs-table-color: var(--bs-body-color) !important; --bs-table-border-color: var(--bs-border-color) !important; --bs-table-striped-bg: var(--bs-secondary-bg) !important; }
@@ -132,9 +137,14 @@ a { color: var(--bs-link-color) !important; } a:hover { color: var(--bs-link-hov
     transition: background-color 0.3s ease, border-bottom-color 0.3s ease;
 }
 
-.navbar .navbar-brand a, .navbar-item {
+.navbar .navbar-brand a {
+    color: var(--navbar-brand-color) !important;
+}
+
+.navbar .navbar-item {
     color: var(--navbar-link-color) !important;
 }
+
 .navbar .navbar-burger span {
     background-color: var(--navbar-link-color) !important;
 }
@@ -207,3 +217,8 @@ google-cast-launcher {
 [data-theme="sepia"] .footer .text-muted,
 [data-theme="sepia"] .footer a.text-muted { color: var(--sepia-text) !important; opacity: 0.9; }
 /* === FIN: ESTILOS FOOTER === */
+
+/* Estilo para el borde del input en estado de hover */
+.input:hover {
+    border-color: #85E3FF !important;
+}
