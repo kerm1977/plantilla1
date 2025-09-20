@@ -1,38 +1,6 @@
+<!-- AQUI NO PUEDE ESTAR INCRUSTADO CSS NI JS SOLO HTML Y LAS CLASES Y FUNCIONES HEREDADAS DE BASE.HTML  -->
 {% extends 'base.html' %}
 {% block title %}Crear Acerca de Nosotros{% endblock %}
-
-{% block head_content %}
-    <style>
-        .fab-container-save {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .fab-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            border: none;
-        }
-        .fab-button:hover {
-            transform: scale(1.05);
-            filter: brightness(90%);
-        }
-        .fab-button-save {
-            background-color: var(--bs-warning);
-            color: var(--bs-dark);
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
     <div class="container">
         <h1 class="text-center mb-5">Crear Sección "Acerca de Nosotros"</h1>

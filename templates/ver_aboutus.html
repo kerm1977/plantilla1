@@ -1,72 +1,7 @@
+<!-- AQUI NO PUEDE ESTAR INCRUSTADO CSS NI JS SOLO HTML Y LAS CLASES Y FUNCIONES HEREDADAS DE BASE.HTML  -->
+
 {% extends 'base.html' %}
 {% block title %}Acerca de Nosotros{% endblock %}
-
-{% block head_content %}
-<style>
-.about-us-container {
-margin: 30px 15px;
-padding: 0;
-border-radius: 12px;
-font-family: 'Inter', sans-serif;
-}
-
-    .about-us-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        color: var(--bs-warning);
-    }
-
-    .nav-tabs {
-        border-bottom: 2px solid var(--bs-border-color);
-        margin-bottom: 20px;
-        justify-content: center;
-    }
-
-    .nav-tabs .nav-link {
-        border: 1px solid transparent;
-        font-weight: 600;
-        color: var(--bs-body-color);
-    }
-
-    .nav-tabs .nav-link.active {
-        background-color: var(--bs-warning);
-        color: var(--bs-dark);
-        border-color: var(--bs-warning) var(--bs-warning) var(--card-bg);
-    }
-    
-    .logo-section { text-align: center; margin-bottom: 30px; }
-    .logo-image { max-width: 200px; height: auto; border-radius: 8px; margin-bottom: 15px; }
-    .logo-info { font-size: 1.1rem; line-height: 1.6; }
-    .detail-section { font-size: 1.1rem; line-height: 1.5; margin-bottom: 30px; text-align: justify; }
-
-    .fab-container-actions {
-        position: fixed;
-        bottom: 70px;
-        z-index: 1050;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        right: 20px;
-    }
-
-    .fab-button {
-        width: 60px; height: 60px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.8rem; transition: all 0.3s ease; text-decoration: none; border: none;
-        color: var(--bs-light) !important;
-    }
-    .fab-button:hover { transform: scale(1.05); filter: brightness(90%); }
-    .fab-button-edit { background-color: var(--bs-warning); color: var(--bs-dark) !important; }
-    .fab-button-delete { background-color: var(--bs-danger); }
-    .fab-button-pdf { background-color: var(--bs-purple); }
-    .fab-button-txt { background-color: var(--bs-info); }
-    .fab-button-jpg { background-color: var(--bs-orange); }
-
-</style>
-
 {% endblock %}
 
 {% block content %}

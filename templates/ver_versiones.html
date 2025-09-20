@@ -1,72 +1,7 @@
+<!-- AQUI NO PUEDE ESTAR INCRUSTADO CSS NI JS SOLO HTML Y LAS CLASES Y FUNCIONES HEREDADAS DE BASE.HTML  -->
+
 {% extends 'base.html' %}
-
 {% block title %}Ver Versiones{% endblock %}
-
-{% block head_content %}
-{# Estilos específicos para esta página que no están en main.css o sobrescriben base.html #}
-<style>
-    /* Estilos para el contenedor principal de todos los FABs de acción (Crear, Editar, Eliminar) */
-    .fab-main-actions-container {
-        position: fixed;
-        bottom: 75px; /* Distancia desde abajo, para que el FAB de crear esté a 20px */
-        right: 20px; /* Distancia desde la derecha */
-        z-index: 1000; /* Asegura que esté por encima de otros elementos */
-        display: flex;
-        flex-direction: column; /* Apila los elementos verticalmente */
-        align-items: flex-end; /* Alinea los items a la derecha */
-        gap: 10px; /* Espacio entre los botones apilados */
-    }
-
-    /* Estilos comunes para todos los botones FAB de acción (Crear, Editar, Eliminar) */
-    .fab-button-common {
-        width: 60px; /* Tamaño del botón idéntico al de crear/volver */
-        height: 60px; /* Tamaño del botón idéntico */
-        border-radius: 50%; /* Hacerlo circular */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem; /* Tamaño del icono */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        text-decoration: none;
-        border: none; /* Asegurar que no haya borde */
-    }
-
-    .fab-button-common:hover {
-        transform: scale(1.05); /* Pequeño efecto al pasar el ratón */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra al pasar el ratón */
-    }
-
-    /* Estilos específicos para el botón flotante (FAB) de crear */
-    .fab-button-create {
-        background-color: #ffc107; /* Color de fondo warning (naranja) */
-        color: #212529; /* Color de texto oscuro (negro) para contraste */
-    }
-    .fab-button-create:hover {
-        background-color: #e0a800; /* Tono más oscuro al pasar el ratón */
-    }
-
-    /* Estilos específicos para el botón flotante (FAB) de editar */
-    .fab-button-edit {
-        background-color: #007bff; /* Azul (primary) */
-        color: white; /* Blanco */
-    }
-    .fab-button-edit:hover {
-        background-color: #0056b3; /* Azul más oscuro */
-    }
-
-    /* Estilos específicos para el botón flotante (FAB) de eliminar */
-    .fab-button-delete {
-        background-color: #dc3545; /* Rojo (danger) */
-        color: white; /* Blanco */
-    }
-    .fab-button-delete:hover {
-        background-color: #c82333; /* Rojo más oscuro */
-    }
-
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-4 text-center">Lista de Versiones</h1>

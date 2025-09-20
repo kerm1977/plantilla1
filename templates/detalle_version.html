@@ -1,18 +1,8 @@
+<!-- AQUI NO PUEDE ESTAR INCRUSTADO CSS NI JS SOLO HTML Y LAS CLASES Y FUNCIONES HEREDADAS DE BASE.HTML  -->
+
 {% extends 'base.html' %}
 
 {% block title %}Detalle de Versión{% endblock %}
-
-{% block head_content %}
-<style>
-    .ckeditor-content img { max-width: 100%; height: auto; }
-    .ckeditor-content table { width: 100%; border-collapse: collapse; }
-    .ckeditor-content table, .ckeditor-content th, .ckeditor-content td {
-        border: 1px solid var(--bs-border-color);
-        padding: 8px;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="container mt-4">
     <h1 class="text-center text-warning mb-4">{{ version.titulo }}</h1>
