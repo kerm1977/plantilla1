@@ -1,143 +1,114 @@
-<!-- AQUI NO PUEDE ESTAR INCRUSTADO CSS NI JS SOLO HTML Y LAS CLASES Y FUNCIONES HEREDADAS DE BASE.HTML  -->
-
-<nav class="navbar navbar-expand-lg custom-navbar py-1 align-items-center">
-    <div class="container-fluid">
-        <!-- Contenedor para alinear logo y botón Cast -->
-        <div class="navbar-brand-container d-flex align-items-center">
-            <a class="navbar-brand me-auto" href="{{ url_for('home') }}">TRANSAVI</a>
-            <google-cast-launcher class="ms-2"></google-cast-launcher>
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <!-- Logo y botón Cast -->
+        <div class="navbar-brand-container">
+            <a class="navbar-item is-size-4 has-text-weight-bold" href="{{ url_for('home') }}">TRANSAVI</a>
+            <google-cast-launcher class="ml-2"></google-cast-launcher>
         </div>
         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <!-- Botones de Tema e Idioma (visibles en todas las vistas) -->
-                <li class="nav-item">
-                    <!-- Botón de Tema (un solo clic) -->
-                    <a class="nav-link theme-switcher" href="#" role="button" id="single-theme-button">
-                        {% if session.get('theme') == 'dark' %}
-                            <i class="fas fa-moon" id="active-theme-icon"></i>
-                        {% elif session.get('theme') == 'sepia' %}
-                            <i class="fas fa-book-open" id="active-theme-icon"></i>
-                        {% else %}
-                            <i class="fas fa-sun" id="active-theme-icon"></i>
-                        {% endif %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <!-- Botón de Idioma (un solo clic) -->
-                    <a class="nav-link" href="#" role="button" id="single-lang-button">
-                        {% if session.get('lang') == 'en' %}
-                            <span id="lang-icon">🇬🇧</span>
-                        {% else %}
-                            <span id="lang-icon">🇪🇸</span>
-                        {% endif %}
-                    </a>
-                </li>
-                       
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('aboutus.ver_aboutus') }}">
-                        <i class="fas fa-info-circle icon-only-mobile"></i>
-                        <span class="text-only-desktop">{{ _('Acerca de Nosotros') }}</span>
-                    </a>
-                </li>
-        
-                {% if session.logged_in %}
-                    {% if session.role == 'Superuser' %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ _('Más Opciones') }}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ url_for('contactos.ver_contactos') }}">{{ _('Ver Contactos') }}</a></li>
-                                <li><a class="dropdown-item" href="{{ url_for('btns.crear_btns') }}">{{ _('Configurar Botón Flotante') }}</a></li>
-                                <li><a class="dropdown-item" href="https://www.pythonanywhere.com/user/kenth1977/">Pythonanywhere</a></li>
-                                <li><a class="dropdown-item text-danger fw-bold" href="{{ url_for('contactos.admin_manage_roles') }}">{{ _('Administrar Roles') }}</a></li>
-                            </ul>
-                        </li>
-                    {% endif %}
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('perfil.perfil') }}">
-                            <i class="fas fa-user icon-only-mobile"></i>
-                            <span class="text-only-desktop">{{ session.username }}</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">
-                            <i class="fas fa-sign-out-alt icon-only-mobile"></i>
-                            <span class="text-only-desktop">{{ _('Cerrar Sesión') }}</span>
-                        </a>
-                    </li>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+            <!-- Botones de Tema e Idioma -->
+            <a class="navbar-item" id="single-theme-button">
+                {% if session.get('theme') == 'dark' %}
+                    <span class="icon"><i class="fas fa-moon" id="active-theme-icon"></i></span>
+                {% elif session.get('theme') == 'sepia' %}
+                    <span class="icon"><i class="fas fa-book-open" id="active-theme-icon"></i></span>
                 {% else %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">
-                            <i class="fas fa-user icon-only-mobile"></i>
-                            <span class="text-only-desktop">{{ _('Iniciar Sesión') }}</span>
-                        </a>
-                    </li>
-
+                    <span class="icon"><i class="fas fa-sun" id="active-theme-icon"></i></span>
                 {% endif %}
-            </ul>
+            </a>
+            <a class="navbar-item" id="single-lang-button">
+                {% if session.get('lang') == 'en' %}
+                    <span>🇬🇧</span>
+                {% else %}
+                    <span>🇪🇸</span>
+                {% endif %}
+            </a>
+
+            <a class="navbar-item" href="{{ url_for('aboutus.ver_aboutus') }}">
+                <span class="icon is-hidden-desktop">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="is-hidden-touch">{{ _('Acerca de Nosotros') }}</span>
+            </a>
+
+            {% if session.logged_in %}
+                {% if session.role == 'Superuser' %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">{{ _('Más Opciones') }}</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{{ url_for('contactos.ver_contactos') }}">{{ _('Ver Contactos') }}</a>
+                            <a class="navbar-item" href="{{ url_for('btns.crear_btns') }}">{{ _('Configurar Botón Flotante') }}</a>
+                            <a class="navbar-item" href="https://www.pythonanywhere.com/user/kenth1977/">Pythonanywhere</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item has-text-danger has-text-weight-bold" href="{{ url_for('contactos.admin_manage_roles') }}">{{ _('Administrar Roles') }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <a class="navbar-item" href="{{ url_for('perfil.perfil') }}">
+                    <span class="icon is-hidden-desktop">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <span class="is-hidden-touch">{{ session.username }}</span>
+                </a>
+                
+                <a class="navbar-item" href="{{ url_for('logout') }}">
+                    <span class="icon is-hidden-desktop">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    <span class="is-hidden-touch">{{ _('Cerrar Sesión') }}</span>
+                </a>
+            {% else %}
+                <a class="navbar-item" href="{{ url_for('login') }}">
+                    <span class="icon is-hidden-desktop">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <span class="is-hidden-touch">{{ _('Iniciar Sesión') }}</span>
+                </a>
+            {% endif %}
         </div>
     </div>
 </nav>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const langSwitcherButton = document.getElementById('single-lang-button');
-    const themeSwitcherButton = document.getElementById('single-theme-button');
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get all "navbar-burger" elements
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
     
-    // Función para manejar el cambio de idioma
-    if (langSwitcherButton) {
-        langSwitcherButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            
-            let currentLang = document.documentElement.getAttribute('lang');
-            let newLang = (currentLang === 'es') ? 'en' : 'es';
-
-            // Llama a la ruta de Flask para cambiar el idioma
-            fetch('/change_language/' + newLang)
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error('Error al cambiar el idioma.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error de red:', error);
-                });
+        // Add a click event on each of them
+        $navbarBurgers.forEach(el => {
+            el.addEventListener('click', () => {
+                // Get the target from the "data-target" attribute
+                const target = el.dataset.target;
+                const $target = document.getElementById(target);
+    
+                // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
+            });
         });
-    }
 
-    // Función para manejar el cambio de tema
-    if (themeSwitcherButton) {
-        themeSwitcherButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            const themes = ['light', 'dark', 'sepia'];
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const currentIndex = themes.indexOf(currentTheme);
-            const nextIndex = (currentIndex + 1) % themes.length;
-            const newTheme = themes[nextIndex];
+        // Close the menu when clicking outside of it
+        document.addEventListener('click', (event) => {
+            const $navbarMenu = document.getElementById('navbarBasicExample');
+            const $navbarBurger = document.querySelector('.navbar-burger');
 
-            // Llama a la nueva ruta de Flask para cambiar el tema
-            fetch('/change_theme/' + newTheme)
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error('Error al cambiar el tema.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error de red:', error);
-                });
+            // Check if the clicked element is not inside the menu or the burger button
+            if (!event.target.closest('.navbar-menu') && !event.target.closest('.navbar-burger')) {
+                if ($navbarMenu.classList.contains('is-active')) {
+                    $navbarMenu.classList.remove('is-active');
+                    $navbarBurger.classList.remove('is-active');
+                }
+            }
         });
-    }
-});
+    });
 </script>

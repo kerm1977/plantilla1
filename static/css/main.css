@@ -2,6 +2,7 @@
 @import url('base.css');
 @import url('bulma.css');
 @import url('all.min.css');
+@import url('footer.css');
 
 /*FUENTES*/
 @import url('../webfonts/css/all.min.css');

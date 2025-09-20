@@ -1,0 +1,16 @@
+/*footer*/
+/*Estilos para hacer que el footer se quede fijo en la parte inferior de la página, incluso con poco contenido.*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0; /* Asegura que no haya márgenes predeterminados */
+}
+
+main {
+    flex: 1; /* Permite que el contenido principal ocupe todo el espacio disponible */
+}
+
+.footer {
+    flex-shrink: 0; /* Evita que el footer se encoja */
+}

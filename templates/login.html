@@ -10,18 +10,6 @@
 <div class="columns is-centered">
 <div class="column is-5-tablet is-4-desktop">
 <h1 class="title has-text-centered has-text-warning">Iniciar Sesión</h1>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="notification is-{{ category }} is-light">
-                        <button class="delete"></button>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
         <form action="{{ url_for('login') }}" method="POST">
             <div class="field">
                 <label class="label">Nombre de usuario, email o teléfono</label>
