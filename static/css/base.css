@@ -208,6 +208,9 @@ google-cast-launcher {
     background-color: var(--bs-secondary-bg) !important;
     border-top: 1px solid var(--bs-border-color) !important;
     transition: background-color 0.3s ease, border-top-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 [data-theme="dark"] .footer { background-color: var(--dark-surface) !important; }
 [data-theme="dark"] .footer .text-muted,
