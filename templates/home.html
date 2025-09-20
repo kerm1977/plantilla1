@@ -5,18 +5,25 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
-    <h1 class="display-4">¡Bienvenido, {% if session.username %}{{ session.username }}{% else %}Invitado{% endif %}!</h1>
-    
-    <p class="lead">Esta es la página de inicio de tu aplicación.</p>
-    <hr class="my-4" style="border-color: var(--bs-border-color);">
-    <p>Aquí puedes agregar el contenido principal para usuarios autenticados.</p>
-    
-    {% if not session.logged_in %}
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}" role="button">Iniciar Sesión</a>
-            <a class="btn btn-secondary btn-lg" href="{{ url_for('register') }}" role="button">Registrarse</a>
-        </p>
-    {% endif %}
-</div>
+<section class="hero is-warning is-fullheight">
+    <div class="hero-body has-text-centered" style="padding-top: 150px;">
+        <div class="container is-fluid">
+            <p class="title is-size-1 has-text-white has-text-weight-bold">
+                ¡Bienvenido, {% if session.username %}{{ session.username }}{% else %}Invitado{% endif %}!
+            </p>
+            <p class="subtitle is-size-4 has-text-white">
+                Esta es la página de inicio de tu aplicación.
+            </p>
+            <hr class="has-background-white my-4">
+            <p class="is-size-5 has-text-white">Aquí puedes agregar el contenido principal para usuarios autenticados.</p>
+
+            {% if not session.logged_in %}
+                <div class="buttons is-centered mt-5">
+                    <a class="button is-white is-rounded is-large" href="{{ url_for('login') }}">Iniciar Sesión</a>
+                    <a class="button is-dark is-rounded is-large" href="{{ url_for('register') }}">Registrarse</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -2,88 +2,91 @@
 
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-9">
-            <div class="profile-details-container">
-                <!-- CABECERA DEL PERFIL -->
-                <div class="dashboard-header">
-                    <img src="{{ url_for('static', filename=user.avatar_url if user.avatar_url else 'uploads/avatars/default.png') }}" alt="{{ _('Avatar de %(username)s', username=user.username) }}" class="profile-avatar">
-                    <h1 class="h3 mt-3">{{ _('Bienvenido, %(username)s', username=user.username) }}</h1>
-                    <p class="text-muted">@{{ user.username }}</p>
-                </div>
+<div class="container p-4" style="margin-top: 150px;">
+    <!-- CABECERA DEL PERFIL -->
+    <div class="has-text-centered">
+        <figure class="image is-128x128 is-inline-block">
+            <img class="is-rounded" src="{{ url_for('static', filename=user.avatar_url if user.avatar_url else 'uploads/avatars/default.png') }}" alt="{{ _('Avatar de %(username)s', username=user.username) }}">
+        </figure>
+        <h1 class="title is-4 mt-3">{{ _('Bienvenido, %(username)s', username=user.username) }}</h1>
+        <p class="subtitle is-6">@{{ user.username }}</p>
+    </div>
 
-                <!-- SECCIONES DE INFORMACIÓN DETALLADA -->
-                {% set sections = {
-                    _("Información de Contacto"): [
-                        (_("Teléfono"), user.telefono), (_("Email"), user.email), (_("Empresa"), user.empresa),
-                        (_("Dirección (Provincia)"), user.direccion), (_("Rol"), user.role), (_("Cédula"), user.cedula)
-                    ],
-                    _("Información Adicional"): [
-                        (_("Fecha de Registro"), user.fecha_registro.strftime('%d/%m/%Y %H:%M') if user.fecha_registro else None),
-                        (_("Fecha de Cumpleaños"), user.fecha_cumpleanos.strftime('%d/%m/%Y') if user.fecha_cumpleanos else None)
-                    ],
-                    _("Información de Salud"): [
-                        (_("Tipo de Sangre"), user.tipo_sangre), (_("Póliza"), user.poliza), (_("Aseguradora"), user.aseguradora),
-                        (_("Alergias"), user.alergias), (_("Enfermedades Crónicas"), user.enfermedades_cronicas)
-                    ],
-                    _("Contacto de Emergencia"): [
-                        (_("Nombre"), user.nombre_emergencia), (_("Teléfono"), user.telefono_emergencia)
-                    ]
-                } %}
+    <hr class="has-background-warning my-5">
 
-                {% for title, items in sections.items() %}
-                    <h4 class="section-title">{{ title }}</h4>
-                    <div class="row">
-                        {% for label, value in items %}
-                            {% if value %}
-                            <div class="col-md-6 detail-item">
-                                <strong>{{ label }}:</strong>
-                                <span>{{ value }}</span>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
+    <!-- SECCIONES DE INFORMACIÓN DETALLADA -->
+    {% set sections = {
+        _("Información de Contacto"): [
+            (_("Teléfono"), user.telefono), (_("Email"), user.email), (_("Empresa"), user.empresa),
+            (_("Dirección (Provincia)"), user.direccion), (_("Rol"), user.role), (_("Cédula"), user.cedula)
+        ],
+        _("Información Adicional"): [
+            (_("Fecha de Registro"), user.fecha_registro.strftime('%d/%m/%Y %H:%M') if user.fecha_registro else None),
+            (_("Fecha de Cumpleaños"), user.fecha_cumpleanos.strftime('%d/%m/%Y') if user.fecha_cumpleanos else None)
+        ],
+        _("Información de Salud"): [
+            (_("Tipo de Sangre"), user.tipo_sangre), (_("Póliza"), user.poliza), (_("Aseguradora"), user.aseguradora),
+            (_("Alergias"), user.alergias), (_("Enfermedades Crónicas"), user.enfermedades_cronicas)
+        ],
+        _("Contacto de Emergencia"): [
+            (_("Nombre"), user.nombre_emergencia), (_("Teléfono"), user.telefono_emergencia)
+        ]
+    } %}
 
-                <!-- SECCIÓN DE BOTONES DE ACCIÓN -->
-                <div class="actions-section">
-                    <div id="personal-actions-section">
-                        <h3>{{ _('Acciones Personales') }}</h3>
-                        <div class="dashboard-list">
-                            <a href="{{ url_for('perfil.editar_perfil') }}" class="dashboard-link">
-                                <i class="fas fa-user-edit"></i>
-                                <span>{{ _('Editar mi Información') }}</span>
-                            </a>
-                            <a href="{{ url_for('perfil.change_password') }}" class="dashboard-link">
-                                <i class="fas fa-key"></i>
-                                <span>{{ _('Cambiar Contraseña') }}</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    {% if session.role == 'Superuser' %}
-                    <div class="superuser-section mt-4 pt-4">
-                        <h3>{{ _('Panel de Superusuario') }}</h3>
-                        <div class="dashboard-list">
-                            <a href="{{ url_for('contactos.ver_contactos') }}" class="dashboard-link">
-                                <i class="fas fa-address-book"></i>
-                                <span>{{ _('Ver Contactos') }}</span>
-                            </a>
-                            <a href="{{ url_for('btns.crear_btns') }}" class="dashboard-link">
-                                <i class="fas fa-toggle-on"></i>
-                                <span>{{ _('Botones Flotantes') }}</span>
-                            </a>
-                            <a href="{{ url_for('contactos.admin_manage_roles') }}" class="dashboard-link">
-                                <i class="fas fa-user-shield"></i>
-                                <span>{{ _('Administrar Roles') }}</span>
-                            </a>
-                        </div>
+    {% for title, items in sections.items() %}
+        <div class="mb-5">
+            <h4 class="title is-5 has-text-warning">{{ title }}</h4>
+            <div class="columns is-multiline is-centered">
+                {% for label, value in items %}
+                    {% if value %}
+                    <div class="column is-one-third">
+                        <p>
+                            <strong class="has-text-warning">{{ label }}:</strong>
+                            <span>{{ value }}</span>
+                        </p>
                     </div>
                     {% endif %}
-                </div>
+                {% endfor %}
             </div>
         </div>
+        <hr class="has-background-warning my-5">
+    {% endfor %}
+
+    <!-- SECCIÓN DE BOTONES DE ACCIÓN -->
+    <div class="mb-5">
+        <h3 class="title is-5 has-text-warning">{{ _('Acciones Personales') }}</h3>
+        <div class="buttons is-multiline is-centered">
+            <a href="{{ url_for('perfil.editar_perfil') }}" class="button is-warning is-rounded">
+                <span class="icon"><i class="fas fa-user-edit"></i></span>
+                <span>{{ _('Editar mi Información') }}</span>
+            </a>
+            <a href="{{ url_for('perfil.change_password') }}" class="button is-warning is-rounded">
+                <span class="icon"><i class="fas fa-key"></i></span>
+                <span>{{ _('Cambiar Contraseña') }}</span>
+            </a>
+        </div>
     </div>
+    <hr class="has-background-warning my-5">
+
+    {% if session.role == 'Superuser' %}
+    <div class="mb-5">
+        <h3 class="title is-5 has-text-warning">{{ _('Panel de Superusuario') }}</h3>
+        <div class="buttons is-multiline is-centered">
+            <a href="{{ url_for('contactos.ver_contactos') }}" class="button is-link is-rounded">
+                <span class="icon"><i class="fas fa-address-book"></i></span>
+                <span>{{ _('Ver Contactos') }}</span>
+            </a>
+            <a href="{{ url_for('btns.crear_btns') }}" class="button is-link is-rounded">
+                <span class="icon"><i class="fas fa-toggle-on"></i></span>
+                <span>{{ _('Botones Flotantes') }}</span>
+            </a>
+            <a href="{{ url_for('contactos.admin_manage_roles') }}" class="button is-link is-rounded">
+                <span class="icon"><i class="fas fa-user-shield"></i></span>
+                <span>{{ _('Administrar Roles') }}</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}
