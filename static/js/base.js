@@ -9,69 +9,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // LÓGICA DE CAMBIO DE TEMA
-    const themeSwitchers = document.querySelectorAll('.theme-switcher');
+    const themeButton = document.getElementById('single-theme-button');
+    const htmlElement = document.documentElement;
     const activeThemeIcon = document.getElementById('active-theme-icon');
-    const themes = ['light', 'dark', 'sepia'];
-    
-    function updateActiveIcon(theme) {
-        if (!activeThemeIcon) return;
-        let iconClass = 'fa-sun'; // default to light
-        if (theme === 'dark') iconClass = 'fa-moon';
-        if (theme === 'sepia') iconClass = 'fa-book-open';
-        activeThemeIcon.className = 'fas ' + iconClass;
-    }
-    
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        updateActiveIcon(theme);
-        fetch("{{ url_for('change_theme', theme='dummy') }}".replace('dummy', theme), {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        }).then(response => {
-            if (response.ok) {
-                window.location.reload(); // Recarga la página para aplicar el tema
-            }
-        }).catch(console.error);
-    }
-    
-    // Este código maneja el clic en un solo botón
-    const singleThemeButton = document.getElementById('single-theme-button');
-    if (singleThemeButton) {
-        singleThemeButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const currentIndex = themes.indexOf(currentTheme);
-            const nextIndex = (currentIndex + 1) % themes.length;
-            const nextTheme = themes[nextIndex];
-            setTheme(nextTheme);
-        });
-    }
-    updateActiveIcon(document.documentElement.getAttribute('data-theme'));
-    
-    // LÓGICA DE CAMBIO DE IDIOMA
-    const langSwitchers = document.querySelectorAll('.lang-switcher');
-    function setLang(lang) {
-        // Asume que tienes un endpoint '/set_lang' en Flask
-        fetch("{{ url_for('change_language', lang='dummy') }}".replace('dummy', lang), {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        }).then(response => {
-            if (response.ok) {
-                window.location.reload(); // Recarga la página para aplicar el idioma
-            }
-        }).catch(console.error);
-    }
-    
-    const singleLangButton = document.getElementById('single-lang-button');
-    if (singleLangButton) {
-        singleLangButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentLang = document.documentElement.getAttribute('lang');
-            const nextLang = (currentLang === 'es') ? 'en' : 'es';
-            setLang(nextLang);
-        });
-    }
 
+    // Función para actualizar el ícono del tema según el valor de data-theme
+    const updateThemeIcon = (theme) => {
+        switch (theme) {
+            case 'dark':
+                activeThemeIcon.className = 'fas fa-moon';
+                break;
+            case 'sepia':
+                activeThemeIcon.className = 'fas fa-book-open';
+                break;
+            default:
+                activeThemeIcon.className = 'fas fa-sun';
+        }
+    };
+
+    // Al cargar la página, establece el ícono inicial basado en el tema actual
+    updateThemeIcon(htmlElement.getAttribute('data-theme'));
+
+    if (themeButton) {
+        themeButton.addEventListener('click', () => {
+            let currentTheme = htmlElement.getAttribute('data-theme');
+            let newTheme;
+
+            switch (currentTheme) {
+                case 'light':
+                    newTheme = 'dark';
+                    break;
+                case 'dark':
+                    newTheme = 'sepia';
+                    break;
+                case 'sepia':
+                    newTheme = 'light';
+                    break;
+                default:
+                    newTheme = 'light';
+            }
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
 
     // LÓGICA PARA CERRAR NAVBAR (MOVIDO DESDE NAVBAR.HTML)
     const navbarCollapseElement = document.getElementById('navbarNav');

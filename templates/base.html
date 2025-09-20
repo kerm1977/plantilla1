@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- AÑADIDO: Atributo lang dinámico y data-theme para manejar el tema con CSS y JS -->
-<html lang="{{ session.get('lang', 'es') }}" data-theme="{{ session.get('theme', 'light') }}">
+<!-- AÑADIDO: Atributo lang dinámico para manejar el tema con CSS y JS -->
+<html lang="{{ session.get('lang', 'es') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mi App Flask{% endblock %}</title>
-    
+
     <!-- =================================================================
     ARCHIVOS CSS EXTERNOS
     ================================================================== -->
@@ -13,8 +13,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     <!-- ... (otras etiquetas meta) ... -->
-
     <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+    <script>
+        // Script para cargar el tema desde localStorage al cargar la página
+        (() => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
+    </script>
 </head>
 <body>
 
@@ -24,24 +34,20 @@
         {% include "flash.html" %}
         {% block content %}{% endblock %}
     </div>
-    
+
     <!-- Botón Flotante Volver -->
     <a href="javascript:history.back()" id="back-fab" class="back-fab-button btn btn-warning" title="Volver atrás">
         <i class="fas fa-arrow-left"></i>
     </a>
 
     {% include "footer.html" %}
-    
+
     <!-- ... (HTML del body) ... -->
-    
+
     <!-- =================================================================
     SCRIPTS
     ================================================================== -->
-    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
     <script src="{{ url_for('static', filename='js/password_toggles.js') }}"></script>
-
-
 </body>
 </html>
