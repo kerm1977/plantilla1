@@ -8,92 +8,112 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-9">
-            <div class="">
-                <h2 class="card-title text-center mb-4 text-warning">Administración de Roles de Usuario</h2>
-                <p class="text-muted text-center">Aquí puedes gestionar los roles de todos los usuarios. Solo los Superusuarios tienen acceso a esta sección.</p>
-                <p class="text-danger text-center fw-bold">Recordatorio: Solo puede haber hasta 2 Superusuarios en el sistema.</p>
+<div class="container p-4" style="margin-top: 100px;">
+    <div class="columns is-centered">
+        <div class="column is-10-desktop is-9-tablet">
+            <div class="box">
+                <h2 class="title is-4 has-text-centered has-text-warning">Administración de Roles de Usuario</h2>
+                <p class="has-text-centered has-text-grey">Aquí puedes gestionar los roles de todos los usuarios. Solo los Superusuarios tienen acceso a esta sección.</p>
+                <p class="has-text-centered has-text-danger has-text-weight-bold">Recordatorio: Solo puede haber hasta 2 Superusuarios en el sistema.</p>
 
                 <!-- Sección para Superusuarios y Administradores -->
-                <h3 class="mt-5 mb-3 text-primary">Superusuarios y Administradores</h3>
+                <h3 class="title is-5 mt-5 has-text-primary">Superusuarios y Administradores</h3>
                 <div class="user-list mt-4">
                     {% if admin_users %}
                         {% for user in admin_users %}
-                            <div class="user-card border rounded p-3 mb-3 bg-light">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="mb-0">@{{ user.username }}</h5>
-                                    <span class="badge {% if user.role == 'Superuser' %}bg-danger{% elif user.role == 'Administrador' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ user.role }}</span>
-                                </div>
-                                <form action="{{ url_for('contactos.admin_manage_roles') }}" method="POST" class="d-flex align-items-center">
-                                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                                    <div class="flex-grow-1 me-2">
-                                        <select name="new_role" class="form-select form-select-sm">
-                                            <option value="Usuario Regular" {% if user.role == 'Usuario Regular' %}selected{% endif %}>Usuario Regular</option>
-                                            <option value="Administrador" {% if user.role == 'Administrador' %}selected{% endif %}>Administrador</option>
-                                            <option value="Superuser" {% if user.role == 'Superuser' %}selected{% endif %}>Superuser</option>
-                                        </select>
+                            <div class="card p-3 mb-3">
+                                <div class="media is-align-items-center mb-2">
+                                    <div class="media-content">
+                                        <h5 class="title is-5 mb-0">@{{ user.username }}</h5>
                                     </div>
-                                    <div class="flex-shrink-0">
+                                    <div class="media-right">
+                                        <span class="tag is-rounded {% if user.role == 'Superuser' %}is-danger{% elif user.role == 'Administrador' %}is-warning{% else %}is-light{% endif %}">{{ user.role }}</span>
+                                    </div>
+                                </div>
+                                <form action="{{ url_for('contactos.admin_manage_roles') }}" method="POST" class="is-flex is-align-items-center">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <div class="field is-expanded mr-2">
+                                        <div class="control">
+                                            <div class="select is-small is-fullwidth">
+                                                <select name="new_role">
+                                                    <option value="Usuario Regular" {% if user.role == 'Usuario Regular' %}selected{% endif %}>Usuario Regular</option>
+                                                    <option value="Administrador" {% if user.role == 'Administrador' %}selected{% endif %}>Administrador</option>
+                                                    <option value="Superuser" {% if user.role == 'Superuser' %}selected{% endif %}>Superuser</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="control">
                                         {# Bloquear el botón si el usuario actual intenta cambiar su propio rol de Superuser a otro #}
                                         {% if session.get('user_id') == user.id and user.role == 'Superuser' %}
-                                            <button type="submit" class="btn btn-warning btn-sm w-100" disabled title="No puedes cambiar tu propio rol de Superuser.">Actualizar</button>
+                                            <button type="submit" class="button is-warning is-small is-fullwidth" disabled title="No puedes cambiar tu propio rol de Superuser.">Actualizar</button>
                                         {% else %}
-                                            <button type="submit" class="btn btn-warning btn-sm w-100">Actualizar</button>
+                                            <button type="submit" class="button is-warning is-small is-fullwidth">Actualizar</button>
                                         {% endif %}
                                     </div>
                                 </form>
                             </div>
                         {% endfor %}
                     {% else %}
-                        <div class="text-center py-4 border rounded bg-light">
+                        <div class="notification is-light has-text-centered py-4">
                             No hay Superusuarios o Administradores registrados.
                         </div>
                     {% endif %}
                 </div>
 
                 <!-- Sección para buscar y asignar roles a Usuarios Regulares -->
-                <h3 class="mt-5 mb-3 text-primary">Buscar y Asignar Roles a Usuarios Regulares</h3>
-                <p class="text-muted text-center">Usa el buscador para encontrar usuarios con el rol "Usuario Regular" y asignarles un nuevo rol.</p>
+                <h3 class="title is-5 mt-5 has-text-primary">Buscar y Asignar Roles a Usuarios Regulares</h3>
+                <p class="has-text-centered has-text-grey">Usa el buscador para encontrar usuarios con el rol "Usuario Regular" y asignarles un nuevo rol.</p>
 
                 <form action="{{ url_for('contactos.admin_manage_roles') }}" method="GET" class="mb-4">
-                    <div class="input-group">
-                        <input type="text" name="search_query_regular" class="form-control" placeholder="Buscar usuario regular por nombre de usuario, nombre, apellido o email..." value="{{ search_query_regular if search_query_regular }}">
-                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input class="input" type="text" name="search_query_regular" placeholder="Buscar usuario regular por nombre de usuario, nombre, apellido o email..." value="{{ search_query_regular if search_query_regular }}">
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button is-primary">Buscar</button>
+                        </div>
                     </div>
                 </form>
 
                 <div class="user-list mt-4">
                     {% if regular_users %}
                         {% for user in regular_users %}
-                            <div class="user-card border rounded p-3 mb-3 bg-light">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="mb-0">@{{ user.username }}</h5>
-                                    <span class="badge {% if user.role == 'Superuser' %}bg-danger{% elif user.role == 'Administrador' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ user.role }}</span>
-                                </div>
-                                <form action="{{ url_for('contactos.admin_manage_roles') }}" method="POST" class="d-flex align-items-center">
-                                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                                    <div class="flex-grow-1 me-2">
-                                        <select name="new_role" class="form-select form-select-sm">
-                                            <option value="Usuario Regular" {% if user.role == 'Usuario Regular' %}selected{% endif %}>Usuario Regular</option>
-                                            <option value="Administrador" {% if user.role == 'Administrador' %}selected{% endif %}>Administrador</option>
-                                            <option value="Superuser" {% if user.role == 'Superuser' %}selected{% endif %}>Superuser</option>
-                                        </select>
+                            <div class="card p-3 mb-3">
+                                <div class="media is-align-items-center mb-2">
+                                    <div class="media-content">
+                                        <h5 class="title is-5 mb-0">@{{ user.username }}</h5>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <button type="submit" class="btn btn-warning btn-sm w-100">Actualizar</button>
+                                    <div class="media-right">
+                                        <span class="tag is-rounded {% if user.role == 'Superuser' %}is-danger{% elif user.role == 'Administrador' %}is-warning{% else %}is-light{% endif %}">{{ user.role }}</span>
+                                    </div>
+                                </div>
+                                <form action="{{ url_for('contactos.admin_manage_roles') }}" method="POST" class="is-flex is-align-items-center">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <div class="field is-expanded mr-2">
+                                        <div class="control">
+                                            <div class="select is-small is-fullwidth">
+                                                <select name="new_role">
+                                                    <option value="Usuario Regular" {% if user.role == 'Usuario Regular' %}selected{% endif %}>Usuario Regular</option>
+                                                    <option value="Administrador" {% if user.role == 'Administrador' %}selected{% endif %}>Administrador</option>
+                                                    <option value="Superuser" {% if user.role == 'Superuser' %}selected{% endif %}>Superuser</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="control">
+                                        <button type="submit" class="button is-warning is-small is-fullwidth">Actualizar</button>
                                     </div>
                                 </form>
                             </div>
                         {% endfor %}
                     {% else %}
                         {% if search_query_regular %}
-                            <div class="text-center py-4 border rounded bg-light">
+                            <div class="notification is-light has-text-centered py-4">
                                 No se encontraron usuarios regulares para "{{ search_query_regular }}".
                             </div>
                         {% else %}
-                            <div class="text-center py-4 border rounded bg-light">
+                            <div class="notification is-light has-text-centered py-4">
                                 Realiza una búsqueda para encontrar usuarios regulares.
                             </div>
                         {% endif %}

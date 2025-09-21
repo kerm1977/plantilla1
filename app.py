@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, jsonify, make_response, Blueprint
 from config import Config
 import os
 from werkzeug.utils import secure_filename
@@ -18,6 +18,8 @@ from flask_mail import Mail, Message
 from version import version_bp, Version
 from btns import btns_bp
 from flask_babel import Babel  # <-- CAMBIO CLAVE: Usa la importación de Flask-Babel
+# --- IMPORTACIONES PARA LA LÓGICA DE EXPORTACIÓN ---
+from exports import export_to_pdf, export_to_jpg, export_to_xls, export_to_vcard
 
 # --- Instanciar las extensiones globalmente ---
 mail = Mail()
@@ -551,13 +553,55 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+
+# --- INICIO: LÓGICA DE EXPORTACIÓN (TU CÓDIGO) ---
+# Define un Blueprint para organizar las rutas de exportación
+export_bp = Blueprint('export', __name__)
+
+@export_bp.route('/export/<format_type>')
+def export_data(format_type):
+    """
+    Maneja las solicitudes de exportación de datos en diferentes formatos.
+    Esta es una vista de ejemplo.
+
+    Parámetros:
+    - format_type (str): El tipo de formato solicitado (pdf, jpg, xls, vcard).
+
+    Retorna:
+    - flask.Response: Una respuesta de Flask con el archivo adjunto.
+    """
+    # Ejemplo de datos. En una aplicación real, estos datos vendrían de una base de datos o de otra fuente.
+    sample_data = [
+        {'nombre': 'Juan', 'apellido': 'Pérez', 'email': 'juan.perez@example.com', 'telefono': '555-1234'},
+        {'nombre': 'María', 'apellido': 'Gómez', 'email': 'maria.gomez@example.com', 'telefono': '555-5678'},
+        {'nombre': 'Luis', 'apellido': 'Rodríguez', 'email': 'luis.r@example.com', 'telefono': '555-9012'}
+    ]
+
+    if format_type == 'pdf':
+        return export_to_pdf(sample_data, 'contactos.pdf')
+    elif format_type == 'jpg':
+        return export_to_jpg(sample_data, 'reporte.jpg')
+    elif format_type == 'xls':
+        return export_to_xls(sample_data, 'contactos.xlsx')
+    elif format_type == 'vcard':
+        # Para VCard, solo exportamos el primer contacto
+        if sample_data:
+            return export_to_vcard(sample_data[0], f"contacto_{sample_data[0]['nombre']}.vcf")
+        else:
+            return "No hay datos de contacto para exportar.", 404
+    else:
+        return "Formato de exportación no soportado.", 400
+
+# --- FIN DE LA LÓGICA DE EXPORTACIÓN ---
+
+
 # REGISTRO DE BLUEPRINTS (DEBE IR DESPUÉS DE LA INICIALIZACIÓN DE EXTENSIONES)
 app.register_blueprint(contactos_bp)
 app.register_blueprint(perfil_bp, url_prefix='/perfil')
 app.register_blueprint(aboutus_bp, url_prefix='/aboutus')
 app.register_blueprint(version_bp, url_prefix='/version')
 app.register_blueprint(btns_bp) # REGISTRO DEL BLUEPRINT DE BTNS
-
+app.register_blueprint(export_bp) # REGISTRO DEL BLUEPRINT DE EXPORTACIÓN
 
 # --- AÑADE ESTAS DOS LÍNEAS PARA CONECTAR OAUTH ---
 init_oauth(app)
@@ -625,11 +669,3 @@ if __name__ == '__main__':
 # (env) 23:32 ~/LATRIBU1 (main)$ flask db init
 # (env) 23:33 ~/LATRIBU1 (main)$ flask db migrate -m "Initial migration with all models"
 # (env) 23:34 ~/LATRIBU1 (main)$ flask db upgrade
-
-
-
-
-# GUARDA  todas las dependecias para utilizar offline luego
-# pip download -r requirements.txt -d librerias_offline
-# INSTALA  todas las dependecias para utilizar offline luego
-# pip install --no-index --find-links=./librerias_offline -r requirements.txt

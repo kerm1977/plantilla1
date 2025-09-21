@@ -3,14 +3,14 @@
 {% extends 'base.html' %}
 {% block title %}{{ _('Ver Contactos') }}{% endblock %}
 {% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-11 col-lg-10">
-            <div class="contact-list-container p-4 rounded-3">
-                <div class="text-center mb-4">
-                    <h2 class="card-title text-warning">{{ _('Lista de Contactos') }}</h2>
+<div class="container is-max-desktop p-4" style="margin-top: 100px;">
+    <div class="columns is-centered">
+        <div class="column is-11-desktop is-10-tablet">
+            <div class="contact-list-container">
+                <div class="has-text-centered mb-4">
+                    <h2 class="title is-4 has-text-warning">{{ _('Lista de Contactos') }}</h2>
                     {% if user_count is defined %}
-                        <p class="text-muted mb-0">
+                        <p class="subtitle is-6 has-text-grey-light mb-0">
                             {% if search_query %}
                                 {{ _('Se encontraron %(user_count)s usuarios para "%(search_query)s"', user_count=user_count, search_query=search_query) }}
                             {% else %}
@@ -22,92 +22,53 @@
 
                 {# Formulario de búsqueda #}
                 <div class="mb-4">
-                    <form action="{{ url_for('contactos.ver_contactos') }}" method="GET" class="d-flex">
-                        <input type="hidden" name="view" id="view-input" value="{{ view_mode }}">
-                        <input type="text" class="form-control me-2" name="search_query" placeholder="{{ _('Buscar por nombre, teléfono, email, etc.') }}" value="{{ search_query if search_query else '' }}">
-                        <button type="submit" class="btn btn-outline-warning">{{ _('Buscar') }}</button>
-                        {% if search_query %}
-                            <a href="{{ url_for('contactos.ver_contactos', view=view_mode) }}" class="btn btn-outline-secondary ms-2">{{ _('Limpiar') }}</a>
-                        {% endif %}
+                    <form action="{{ url_for('contactos.ver_contactos') }}" method="GET">
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" type="text" name="search_query" placeholder="{{ _('Buscar por nombre, teléfono, email, etc.') }}" value="{{ search_query if search_query else '' }}">
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-warning is-outlined">{{ _('Buscar') }}</button>
+                            </div>
+                            {% if search_query %}
+                            <div class="control">
+                                <a href="{{ url_for('contactos.ver_contactos') }}" class="button is-light is-outlined">{{ _('Limpiar') }}</a>
+                            </div>
+                            {% endif %}
+                        </div>
                     </form>
                 </div>
 
-                {# Selector de Vista #}
-                <div class="view-switcher mb-4">
-                    <button id="grid-view-btn" class="btn btn-outline-secondary" title="{{ _('Vista de Tarjetas') }}">
-                        <i class="fas fa-th-large"></i>
-                    </button>
-                    <button id="list-view-btn" class="btn btn-outline-secondary" title="{{ _('Vista de Lista') }}">
-                        <i class="fas fa-list"></i>
-                    </button>
-                </div>
-
-
                 {% if users %}
-                    {# Vista de Tarjetas (Grid) #}
-                    <div id="grid-view">
+                    {# Nueva Vista de Lista simplificada #}
+                    <div id="list-view" class="list-container">
                         {% for user in users %}
-                            <div class="contact-card border rounded p-3 mb-3">
-                                <div class="d-flex align-items-center mb-3">
-                                    <img src="{{ url_for('static', filename=user.avatar_url if user.avatar_url else 'uploads/avatars/default.png') }}"
-                                         alt="{{ _('Avatar de %(username)s', username=user.username) }}"
-                                         class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
-                                    <div>
-                                        <h5 class="mb-0">{{ user.nombre | title }} {{ user.primer_apellido | title }}{% if user.segundo_apellido %} {{ user.segundo_apellido | title }}{% endif %}</h5>
-                                        <small class="text-muted">@{{ user.username }}</small>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6 col-md-4 contact-detail">
-                                        <strong>{{ _('Teléfono') }}:</strong>
-                                        <span>{{ user.telefono or 'N/A' }}</span>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4 contact-detail">
-                                        <strong>{{ _('Email') }}:</strong>
-                                        <span>{{ user.email or 'N/A' }}</span>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4 contact-detail">
-                                        <strong>{{ _('Cédula') }}:</strong>
-                                        <span>{{ user.cedula or 'N/A' }}</span>
-                                    </div>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <a href="{{ url_for('contactos.ver_detalle', user_id=user.id) }}" class="btn btn-warning btn-sm">
-                                        <i class="fas fa-eye me-1"></i> {{ _('Ver más') }}
-                                    </a>
-                                </div>
+                        <div class="media is-align-items-center p-3">
+                            <figure class="media-left is-flex is-align-items-center">
+                                <a href="{{ url_for('contactos.ver_detalle', user_id=user.id) }}">
+                                    <p class="image is-64x64 is-rounded">
+                                        <img src="{{ url_for('static', filename=user.avatar_url if user.avatar_url else 'uploads/avatars/default.png') }}" alt="{{ _('Avatar de %(username)s', username=user.username) }}" class="is-rounded">
+                                    </p>
+                                </a>
+                            </figure>
+                            <div class="media-content">
+                                <a href="{{ url_for('contactos.ver_detalle', user_id=user.id) }}">
+                                    <p class="title is-5 mb-1">{{ user.nombre | title }} {{ user.primer_apellido | title }} {{ user.segundo_apellido | title if user.segundo_apellido  else '' }}</p>
+                                    <p class="subtitle is-7 has-text-grey">@{{ user.username }}</p>
+                                </a>
                             </div>
-                        {% endfor %}
-                    </div>
-
-                    {# Nueva Vista de Lista (Estilo Caminatas) #}
-                    <div id="list-view">
-                        {% for user in users %}
-                        <div class="contact-list-item">
-                            <div class="contact-list-card">
-                                <div class="contact-list-avatar-wrapper">
-                                    <img src="{{ url_for('static', filename=user.avatar_url if user.avatar_url else 'uploads/avatars/default.png') }}" alt="{{ _('Avatar de %(username)s', username=user.username) }}" class="contact-list-avatar">
-                                </div>
-                                <div class="contact-list-body">
-                                    <div class="contact-list-info">
-                                        <h5 class="contact-list-name">{{ user.nombre }} {{ user.primer_apellido }} {{ user.segundo_apellido if user.segundo_apellido else '' }}</h5>
-                                        <span class="contact-list-detail"><i class="fas fa-phone-alt me-2 text-muted"></i>{{ user.telefono or 'N/A' }}</span>
-                                        <span class="contact-list-detail"><i class="fas fa-id-card me-2 text-muted"></i>{{ user.cedula or 'N/A' }}</span>
-                                        <span class="contact-list-detail" style="grid-column: 1 / -1;"><i class="fas fa-envelope me-2 text-muted"></i>{{ user.email or 'N/A' }}</span>
-                                    </div>
-                                    <div class="contact-list-actions">
-                                        <a href="{{ url_for('contactos.ver_detalle', user_id=user.id) }}" class="btn btn-outline-warning btn-sm" title="{{ _('Ver Detalles') }}">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
+                            <div class="media-right">
+                                <a href="{{ url_for('contactos.ver_detalle', user_id=user.id) }}" class="button is-warning is-small is-outlined">
+                                    {{ _('Ver detalles') }}
+                                </a>
                             </div>
                         </div>
+                        <hr class="my-0">
                         {% endfor %}
                     </div>
 
                 {% else %}
-                    <div class="text-center py-4 border rounded">
+                    <div class="notification is-light">
                         {% if search_query %}
                             {{ _('No se encontraron contactos para la búsqueda "%(search_query)s".', search_query=search_query) }}
                         {% else %}
@@ -123,11 +84,8 @@
 {# Botones Flotantes #}
 <div class="fab-container">
     {% if current_role == 'Superuser' or current_role == 'Administrador' %}
-    <a href="{{ url_for('contactos.exportar_todos_excel') }}" class="btn btn-success fab-button" title="{{ _('Exportar a Excel') }}">
-        <i class="fas fa-file-excel"></i>
-    </a>
-    <a href="{{ url_for('register') }}" class="btn btn-warning fab-button" title="{{ _('Agregar nuevo contacto') }}">
-        <i class="fas fa-plus"></i>
+    <a href="{{ url_for('register') }}" class="button is-warning is-rounded fab-button" title="{{ _('Agregar nuevo contacto') }}">
+        <span class="icon is-medium"><i class="fas fa-plus"></i></span>
     </a>
     {% endif %}
 </div>
@@ -136,44 +94,7 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const gridView = document.getElementById('grid-view');
-    const listView = document.getElementById('list-view');
-    const gridBtn = document.getElementById('grid-view-btn');
-    const listBtn = document.getElementById('list-view-btn');
-    const viewInput = document.getElementById('view-input');
-
-    function switchView(viewName) {
-        localStorage.setItem('contactViewMode', viewName); // Guardar en localStorage
-        if (viewName === 'list') {
-            gridView.style.display = 'none';
-            listView.style.display = 'block';
-            gridBtn.classList.remove('active');
-            listBtn.classList.add('active');
-            viewInput.value = 'list';
-        } else { // Default to grid
-            gridView.style.display = 'block';
-            listView.style.display = 'none';
-            listBtn.classList.remove('active');
-            gridBtn.classList.add('active');
-            viewInput.value = 'grid';
-        }
-    }
-
-    gridBtn.addEventListener('click', function() {
-        switchView('grid');
-    });
-
-    listBtn.addEventListener('click', function() {
-        switchView('list');
-    });
-
-    // --- Lógica para la vista inicial ---
-    const savedView = localStorage.getItem('contactViewMode');
-    const urlParams = new URLSearchParams(window.location.search);
-    const viewParam = urlParams.get('view');
-
-    const initialView = viewParam || savedView || 'list'; // Prioridad: URL > LocalStorage > Default
-    switchView(initialView);
+    // No es necesario el script de cambio de vista, la página ahora carga directamente en la vista de lista.
 });
 </script>
 {% endblock %}

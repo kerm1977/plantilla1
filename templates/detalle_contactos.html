@@ -5,14 +5,16 @@
 {% block title %}{{ _('Detalles de Contacto') }}{% endblock %}
 
 {% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-9">
-            <div class="contact-detail-card">
-                <div class="text-center mb-4">
-                    <img src="{{ avatar_url }}" alt="{{ _('Avatar de %(username)s', username=user.username) }}" class="profile-avatar mb-3">
-                    <h3 class="text-warning">{{ user.nombre | title }} {{ user.primer_apellido | title}} {{ user.segundo_apellido | title if user.segundo_apellido  else '' }}</h3>
-                    <p class="text-muted">@{{ user.username }}</p>
+<div class="container is-max-desktop p-4" style="margin-top: 100px;">
+    <div class="columns is-centered">
+        <div class="column is-10-desktop is-12-tablet">
+            <div>
+                <div class="has-text-centered mb-4">
+                    <figure class="image is-128x128 is-inline-block is-rounded">
+                        <img src="{{ avatar_url }}" alt="{{ _('Avatar de %(username)s', username=user.username) }}" class="is-rounded">
+                    </figure>
+                    <h3 class="title is-4 has-text-warning">{{ user.nombre | title }} {{ user.primer_apellido | title}} {{ user.segundo_apellido | title if user.segundo_apellido  else '' }}</h3>
+                    <p class="subtitle is-6 has-text-grey">@{{ user.username }}</p>
                 </div>
 
                 <!-- Bucle para mostrar la información en secciones -->
@@ -37,25 +39,28 @@
                 } %}
 
                 {% for title, items in sections.items() %}
-                    <h4 class="section-title">{{ title }}</h4>
-                    <div class="row">
+                    <h4 class="title is-5">{{ title }}</h4>
+                    <div class="columns is-multiline">
                         {% for label, value in items %}
                             {% if value %}
-                            <div class="col-md-6 detail-item">
-                                <strong>{{ label }}:</strong>
-                                <span>{{ value }}</span>
+                            <div class="column is-half">
+                                <p class="is-size-6 has-text-weight-bold">{{ label }}:</p>
+                                <p class="is-size-6">{{ value }}</p>
                             </div>
                             {% endif %}
                         {% endfor %}
                     </div>
+                    {% if not loop.last %}<hr>{% endif %}
                 {% endfor %}
 
-                <div class="action-buttons text-center mt-4">
+                <div class="has-text-centered mt-5">
                     {% if current_role in ['Superuser', 'Administrador'] or current_user_id == user.id %}
-                        <a href="{{ url_for('contactos.editar_contacto', user_id=user.id) }}" class="btn btn-warning me-2"><i class="fas fa-edit me-1"></i> {{ _('Editar') }}</a>
+                        <a href="{{ url_for('contactos.editar_contacto', user_id=user.id) }}" class="button is-warning is-outlined mr-2"><span class="icon"><i class="fas fa-edit"></i></span><span>{{ _('Editar') }}</span></a>
                     {% endif %}
                     {% if current_role == 'Superuser' %}
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fas fa-trash-alt me-1"></i> {{ _('Eliminar') }}</button>
+                        <button type="button" class="button is-danger" data-target="#confirmDeleteModal" onclick="document.getElementById('confirmDeleteModal').classList.add('is-active');">
+                            <span class="icon"><i class="fas fa-trash-alt"></i></span><span>{{ _('Eliminar') }}</span>
+                        </button>
                     {% endif %}
                 </div>
             </div>
@@ -63,75 +68,23 @@
     </div>
 </div>
 
-<!-- Modal de Confirmación -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ _('Confirmar Eliminación') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                {{ _('¿Estás seguro de que quieres eliminar a %(nombre)s? Esta acción no se puede deshacer.', nombre=user.nombre) }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancelar') }}</button>
-                <form action="{{ url_for('contactos.eliminar_contacto', user_id=user.id) }}" method="POST" class="d-inline">
-                    <button type="submit" class="btn btn-danger">{{ _('Eliminar') }}</button>
-                </form>
-            </div>
-        </div>
+<!-- Modal de Confirmación de Eliminación (Bulma) -->
+<div class="modal" id="confirmDeleteModal">
+    <div class="modal-background" onclick="document.getElementById('confirmDeleteModal').classList.remove('is-active');"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">{{ _('Confirmar Eliminación') }}</p>
+            <button class="delete" aria-label="close" onclick="document.getElementById('confirmDeleteModal').classList.remove('is-active');"></button>
+        </header>
+        <section class="modal-card-body">
+            {{ _('¿Estás seguro de que quieres eliminar a %(nombre)s? Esta acción no se puede deshacer.', nombre=user.nombre) }}
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button" onclick="document.getElementById('confirmDeleteModal').classList.remove('is-active');">{{ _('Cancelar') }}</button>
+            <form action="{{ url_for('contactos.eliminar_contacto', user_id=user.id) }}" method="POST" class="is-inline">
+                <button type="submit" class="button is-danger">{{ _('Eliminar') }}</button>
+            </form>
+        </footer>
     </div>
 </div>
-
-<!-- Botones Flotantes -->
-<div class="fab-container-actions">
-    {% if current_role in ['Superuser', 'Administrador'] %}
-    <a href="{{ url_for('contactos.exportar_vcard', user_id=user.id) }}" class="fab-button fab-button-vcard" title="{{ _('Exportar vCard') }}"><i class="fas fa-address-card"></i></a>
-    {% endif %}
-    <button id="exportToJpg" class="fab-button fab-button-jpg" title="{{ _('Exportar como JPG') }}"><i class="fas fa-image"></i></button>
-    <button id="exportToPdf" class="fab-button fab-button-pdf" title="{{ _('Exportar como PDF') }}"><i class="fas fa-file-pdf"></i></button>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const contentToCapture = document.querySelector('.contact-detail-card');
-    const elementsToHide = document.querySelectorAll('.fab-container-actions, #back-fab');
-    const actionButtonsInCard = contentToCapture.querySelector('.action-buttons');
-
-    async function captureContent(format) {
-        elementsToHide.forEach(c => c.classList.add('hidden-for-capture'));
-        if (actionButtonsInCard) actionButtonsInCard.classList.add('hidden-for-capture');
-        
-        try {
-            const canvas = await html2canvas(contentToCapture, { scale: 2, useCORS: true, scrollY: -window.scrollY });
-            if (format === 'jpg') {
-                const link = document.createElement('a');
-                link.download = 'detalle_contacto.jpg';
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
-            } else if (format === 'pdf') {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({ orientation: 'p', unit: 'px', format: 'a4' });
-                const imgData = canvas.toDataURL('image/png');
-                const imgProps = pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save('detalle_contacto.pdf');
-            }
-        } catch (err) {
-            console.error('Error durante la exportación:', err);
-        } finally {
-            elementsToHide.forEach(c => c.classList.remove('hidden-for-capture'));
-            if (actionButtonsInCard) actionButtonsInCard.classList.remove('hidden-for-capture');
-        }
-    }
-
-    document.getElementById('exportToJpg').addEventListener('click', () => captureContent('jpg'));
-    document.getElementById('exportToPdf').addEventListener('click', () => captureContent('pdf'));
-});
-</script>
 {% endblock %}
